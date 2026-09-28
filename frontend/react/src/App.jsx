@@ -13,6 +13,9 @@ import DdoCreate from "./pages/admin/DdoCreate";
 import DdoCreated from "./pages/admin/DdoCreated";
 import TaxDetails from "./pages/admin/TaxDetails";
 
+import UserCreate from "./pages/admin/UserCreate";
+import UserCreated from "./pages/admin/UserCreated";
+
 import { getUser } from "./services/auth";
 
 const getDashboardPath = (user) => {
@@ -54,6 +57,7 @@ const PublicRoute = ({ children }) => {
 function App() {
   return (
     <Routes>
+
       {/* Login */}
       <Route
         path="/login"
@@ -71,11 +75,10 @@ function App() {
           <ProtectedRoute role="CASHIER">
             <AppLayout role="CASHIER" />
           </ProtectedRoute>
-        }>
+        }
+      >
         <Route index element={<CashierDashboard />} />
-
         <Route path="tax/create" element={<TaxCreate />} />
-
         <Route path="tax/created" element={<TaxCreated />} />
       </Route>
 
@@ -86,21 +89,34 @@ function App() {
           <ProtectedRoute role="ADMIN">
             <AppLayout role="ADMIN" />
           </ProtectedRoute>
-        }>
+        }
+      >
         <Route path="dashboard" element={<AdminDashboard />} />
 
+        {/* DDO */}
         <Route path="ddo/create" element={<DdoCreate />} />
-
         <Route path="ddo/created" element={<DdoCreated />} />
 
+        {/* Tax */}
         <Route path="tax-details" element={<TaxDetails />} />
+
+        {/* Users */}
+        <Route path="users/create" element={<UserCreate />} />
+        <Route path="users/created" element={<UserCreated />} />
       </Route>
 
       {/* Root */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route
+        path="/"
+        element={<Navigate to="/login" replace />}
+      />
 
       {/* Unknown URL */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route
+        path="*"
+        element={<Navigate to="/login" replace />}
+      />
+
     </Routes>
   );
 }
