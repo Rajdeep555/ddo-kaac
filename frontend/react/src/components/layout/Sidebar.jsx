@@ -39,6 +39,16 @@ const DdoIcon = () => (
   </Icon>
 );
 
+/* Users Icon */
+const UsersIcon = () => (
+  <Icon>
+    <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+    <circle cx="9" cy="7" r="4" />
+    <path d="M22 21v-2a4 4 0 00-3-3.87" />
+    <path d="M16 3.13a4 4 0 010 7.75" />
+  </Icon>
+);
+
 const LogoutIcon = () => (
   <Icon>
     <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
@@ -64,8 +74,14 @@ const cashierMenu = [
     label: "Tax",
     icon: TaxIcon,
     children: [
-      { to: "/cashier/tax/create", label: "Create" },
-      { to: "/cashier/tax/created", label: "Created Data" },
+      {
+        to: "/cashier/tax/create",
+        label: "Create",
+      },
+      {
+        to: "/cashier/tax/created",
+        label: "Created Data",
+      },
     ],
   },
 ];
@@ -76,15 +92,43 @@ const adminMenu = [
     label: "DDO",
     icon: DdoIcon,
     children: [
-      { to: "/admin/ddo/create", label: "Create" },
-      { to: "/admin/ddo/created", label: "Created" },
+      {
+        to: "/admin/ddo/create",
+        label: "Create",
+      },
+      {
+        to: "/admin/ddo/created",
+        label: "Created",
+      },
     ],
   },
+
   {
     key: "tax",
     label: "Tax",
     icon: TaxIcon,
-    children: [{ to: "/admin/tax-details", label: "Tax Details" }],
+    children: [
+      {
+        to: "/admin/tax-details",
+        label: "Tax Details",
+      },
+    ],
+  },
+
+  {
+    key: "users",
+    label: "Users",
+    icon: UsersIcon,
+    children: [
+      {
+        to: "/admin/users/create",
+        label: "Create",
+      },
+      {
+        to: "/admin/users/created",
+        label: "Created",
+      },
+    ],
   },
 ];
 
@@ -97,7 +141,10 @@ const Sidebar = ({ role, mobileOpen, setMobileOpen }) => {
   const isAdmin = role === "ADMIN";
   const menu = isAdmin ? adminMenu : cashierMenu;
 
-  // Open the group that contains the current page on first load
+  /*
+   * Open the group that contains the current page
+   * on first load.
+   */
   const [openMenu, setOpenMenu] = useState(
     () =>
       menu.find((item) =>
@@ -166,13 +213,7 @@ const Sidebar = ({ role, mobileOpen, setMobileOpen }) => {
         `}>
         {/* Brand */}
         <div className="flex h-16 shrink-0 items-center gap-3 border-b border-white/10 px-5">
-          {/* Replace with your official emblem / logo */}
-          <div className="flex h-12 w-12 shrink-0 items-center overflow-hidden justify-center rounded-full border border-white/30 bg-white/10">
-            {/* <Icon className="h-5 w-5">
-              <path d="M3 10 12 4l9 6" />
-              <path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8" />
-              <path d="M3 20h18" />
-            </Icon> */}
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white/10">
             <img src={logo} alt="Logo" className="h-full w-full object-cover" />
           </div>
 
@@ -180,6 +221,7 @@ const Sidebar = ({ role, mobileOpen, setMobileOpen }) => {
             <p className="truncate text-sm font-semibold leading-tight">
               Tax Management
             </p>
+
             <p className="text-xs text-blue-300">
               {isAdmin ? "Admin Panel" : "Cashier Panel"}
             </p>
@@ -188,6 +230,7 @@ const Sidebar = ({ role, mobileOpen, setMobileOpen }) => {
 
         {/* Navigation */}
         <nav className="flex-1 space-y-1 overflow-y-auto p-4">
+          {/* Dashboard */}
           <NavLink
             to={isAdmin ? "/admin/dashboard" : "/cashier"}
             end
@@ -197,15 +240,19 @@ const Sidebar = ({ role, mobileOpen, setMobileOpen }) => {
             <span>Dashboard</span>
           </NavLink>
 
+          {/* Menu groups */}
           {menu.map((item) => {
             const isOpen = openMenu === item.key;
+
             const hasActiveChild = item.children.some((child) =>
               pathname.startsWith(child.to),
             );
+
             const Item = item.icon;
 
             return (
               <div key={item.key}>
+                {/* Parent menu button */}
                 <button
                   type="button"
                   onClick={() => toggleMenu(item.key)}
@@ -213,12 +260,14 @@ const Sidebar = ({ role, mobileOpen, setMobileOpen }) => {
                   className={menuButtonClass(isOpen, hasActiveChild)}>
                   <span className="flex items-center gap-3">
                     <Item />
+
                     <span>{item.label}</span>
                   </span>
 
                   <ChevronIcon open={isOpen} />
                 </button>
 
+                {/* Children */}
                 {isOpen && (
                   <div className="ml-5 mt-1 space-y-1 border-l border-white/15 pl-3">
                     {item.children.map((child) => (
@@ -244,6 +293,7 @@ const Sidebar = ({ role, mobileOpen, setMobileOpen }) => {
             onClick={handleLogout}
             className={`flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-blue-100 transition hover:bg-white/5 hover:text-white ${focusRing}`}>
             <LogoutIcon />
+
             <span>Logout</span>
           </button>
         </div>

@@ -24,25 +24,29 @@ model User {
   email    String   @unique
   password String
   role     UserRole @default(CASHIER)
+  isActive Boolean  @default(true)
 
   submissions TaxSubmission[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([role])
+  @@index([isActive])
 }
 
 model Ddo {
-  id          Int             @id @default(autoincrement())
-  ddoCode     String          @unique
-  name        String
-  email       String
-  phone       String
-  isActive    Boolean         @default(true)
+  id       Int     @id @default(autoincrement())
+  ddoCode  String  @unique
+  name     String
+  email    String
+  phone    String
+  isActive Boolean @default(true)
 
   submissions TaxSubmission[]
 
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([name])
   @@index([email])

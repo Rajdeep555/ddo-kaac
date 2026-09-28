@@ -10,6 +10,7 @@ import testRoutes from "./routes/testRoutes.js";
 import cashierRoutes from "./routes/cashierRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import ddoRoutes from "./routes/ddoRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api/test", testRoutes);
 app.use("/api/cashier", cashierRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/ddos", ddoRoutes);
+app.use("/api/admin/users", userRoutes);
 
 
 const PORT = process.env.PORT || 5000;
