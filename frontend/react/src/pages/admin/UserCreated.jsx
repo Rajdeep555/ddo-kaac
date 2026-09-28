@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "../../services/api";
-import ConfirmModal from "../../components/ConfirmModal";
+import ConfirmModal from "../../components/common/ConfirmModal";
 
 const UserCreated = () => {
   const [users, setUsers] = useState([]);
