@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  CASHIER
+}
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String
+  email    String   @unique
+  password String
+  role     UserRole @default(CASHIER)
+
+  submissions TaxSubmission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Ddo {
+  id          Int             @id @default(autoincrement())
+  ddoCode     String          @unique
+  name        String
+  email       String
+  phone       String
+  isActive    Boolean         @default(true)
+
+  submissions TaxSubmission[]
+
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([name])
+  @@index([email])
+  @@index([phone])
+  @@index([isActive])
+}
+
+model TaxSubmission {
+  id               Int              @id @default(autoincrement())
+  date             DateTime
+  natureOfTax      String
+  headOfAccount    String
+  receiptNo        String
+  amount           Decimal          @db.Decimal(15, 2)
+  payeeNameAddress String
+  collectorName    String
+  dateOfDeposit    DateTime
+  treasuryName     String
+  treasuryCode     String
+  challanNo        String
+  voucherNo        String
+  dateOfVoucher    DateTime?
+  status           SubmissionStatus @default(PENDING)
+
+  cashierId Int
+  cashier   User @relation(fields: [cashierId], references: [id])
+
+  ddoId Int?
+  ddo   Ddo? @relation(fields: [ddoId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([cashierId])
+  @@index([ddoId])
+  @@index([date])
+  @@index([status])
+  @@index([natureOfTax])
+  @@index([headOfAccount])
+  @@index([receiptNo])
+  @@index([treasuryCode])
+  @@index([challanNo])
+  @@index([voucherNo])
+  @@index([createdAt])
+}
